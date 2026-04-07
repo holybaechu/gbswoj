@@ -1,0 +1,8 @@
+[package]
+name = "judger"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+fred = "10.1.0"
+tokio = { version = "1.51.0", features = ["full"] }

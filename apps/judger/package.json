@@ -1,0 +1,11 @@
+{
+  "name": "@gbswoj/judger",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "watchexec -r -e rs,toml -- cargo run --release",
+    "format": "cargo fmt",
+    "lint": "cargo clippy",
+    "build": "cargo build --release"
+  }
+}
