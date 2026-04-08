@@ -1,7 +1,24 @@
 FROM oven/bun:1.3.11-alpine
 
-RUN apk add --no-cache rust cargo watchexec nsjail python3
+RUN --mount=type=cache,target=/var/cache/apk \
+    apk add rust cargo watchexec nsjail python3
 
 WORKDIR /app
+
+COPY package.json bun.lock Cargo.toml Cargo.lock ./
+COPY apps/backend/package.json apps/backend/
+COPY apps/frontend/package.json apps/frontend/
+COPY apps/judger/package.json apps/judger/Cargo.toml apps/judger/
+
+RUN mkdir -p apps/judger/src && echo "fn main() {}" > apps/judger/src/main.rs
+
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install
+
+RUN --mount=type=cache,target=/var/cache/cargo \
+    env CARGO_HOME=/var/cache/cargo cargo fetch && \
+    mkdir -p /root/.cargo && \
+    cp -r /var/cache/cargo/registry /root/.cargo/registry && \
+    cp -r /var/cache/cargo/git /root/.cargo/git 2>/dev/null || true
 
 CMD ["sh", "-c", "bun install && bunx turbo run dev"]

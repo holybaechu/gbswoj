@@ -1,5 +1,6 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
+  "globalEnv": ["REDIS_URL", "HOST", "PORT"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
