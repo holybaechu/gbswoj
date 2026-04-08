@@ -10,15 +10,30 @@ const RESULT_TTL_SECONDS: i64 = 3600;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let redis_url = std::env::var("REDIS_URL").unwrap_or_else(|_| "redis://localhost:6379".to_string());
+    let redis_url =
+        std::env::var("REDIS_URL").unwrap_or_else(|_| "redis://localhost:6379".to_string());
     println!("Connecting to Redis at {}...", redis_url);
     let config = Config::from_url(&redis_url)?;
-    
-    let listener_client = Builder::from_config(config.clone()).build()?;
-    listener_client.init().await?;
 
-    let worker_client = Builder::from_config(config).build()?;
-    worker_client.init().await?;
+    let listener_client = loop {
+        let client = Builder::from_config(config.clone()).build()?;
+        if let Err(e) = client.init().await {
+            println!("Listener client failed to connect to Redis: {}. Retrying in 2 seconds...", e);
+            tokio::time::sleep(std::time::Duration::from_secs(2)).await;
+        } else {
+            break client;
+        }
+    };
+
+    let worker_client = loop {
+        let client = Builder::from_config(config.clone()).build()?;
+        if let Err(e) = client.init().await {
+            println!("Worker client failed to connect to Redis: {}. Retrying in 2 seconds...", e);
+            tokio::time::sleep(std::time::Duration::from_secs(2)).await;
+        } else {
+            break client;
+        }
+    };
 
     let mut last_id = "$".to_string();
     println!("NSJail Judger ready. Listening for submissions...");
@@ -76,38 +91,40 @@ async fn handle_submission(client: Client, id: String, code: String) {
     let _: () = client
         .set(
             &result_key,
-            output,
+            output.clone(),
             Some(Expiration::EX(RESULT_TTL_SECONDS)),
             None,
             false,
         )
         .await
         .unwrap_or_else(|e| println!("Redis Error: {}", e));
+
+    let _: () = client
+        .publish(format!("result_pub:{}", id), output)
+        .await
+        .unwrap_or_else(|e| println!("Redis Error: {}", e));
 }
- 
+
 fn run_in_nsjail(code: String) -> String {
     println!("Running in NSJail...");
 
     let mut child = Command::new("nsjail")
         .args([
-            "-Mo", 
-            "--chroot",
-            "/", 
-            "--user",
-            "99999", 
-            "--group",
-            "99999", 
+            "-Mo",
+            "-R", "/bin",
+            "-R", "/lib",
+            "-R", "/usr",
+            "-R", "/etc",
+            "-R", "/dev/urandom",
+            "-R", "/dev/null",
+            "-R", "/dev/zero",
+            "-T", "/tmp",
             "--time_limit",
             EXECUTION_TIMEOUT_SECS,
-            "--max_cpus",
-            "1",
-            "--rlimit_as",
-            "256",            
-            "--disable_proc", 
-            "--",             
-            "/usr/bin/python3",
-            "-u",
-            "-", 
+            "--max_cpus", "1",
+            "--rlimit_as", "256",
+            "--disable_proc",
+            "--", "/usr/bin/python3", "-u", "-",
         ])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())

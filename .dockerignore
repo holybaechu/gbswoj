@@ -1,0 +1,9 @@
+node_modules
+target
+out
+.git
+.turbo
+.vscode
+.env
+dist
+build

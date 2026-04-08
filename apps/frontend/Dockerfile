@@ -1,11 +1,19 @@
+FROM oven/bun:1.3.11-alpine as pruner
+
+WORKDIR /app
+COPY . .
+RUN bunx turbo prune @gbswoj/frontend --docker
+
 FROM oven/bun:1.3.11-alpine as builder
 
 WORKDIR /app
 
-COPY package.json bun.lock ./
-COPY apps ./apps
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/bun.lock ./
 
-RUN bun install
+RUN bun install --frozen-lockfile
+
+COPY --from=pruner /app/out/full/ .
 
 WORKDIR /app/apps/frontend
 RUN bun run build

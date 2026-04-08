@@ -10,6 +10,7 @@ services:
     depends_on:
       - backend
   backend:
+    # restart: on-failure
     build:
       context: .
       dockerfile: apps/backend/Dockerfile
@@ -20,6 +21,7 @@ services:
     depends_on:
       - redis
   judger:
+    # restart: on-failure
     build:
       context: .
       dockerfile: apps/judger/Dockerfile

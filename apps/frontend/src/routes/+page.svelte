@@ -8,22 +8,32 @@
   async function pollResult(submissionId: string) {
     status = "Executing...";
 
-    for (let i = 0; i < 10; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const { data, error } = await api.api.result({ id: submissionId }).get();
 
-      try {
-        const { data, error } = await api.api.result({ id: submissionId }).get();
+      if (error) throw error;
+      
+      if (!data) return;
 
-        if (data && data.status === "completed") {
+      for await (const chunk of data) {
+        if (!chunk.data) continue;
+        
+        const payload = chunk.data as { status: string, output: string | null };
+        if (payload.status === "completed") {
           status = "Completed!";
-          output = data.output;
+          output = payload.output;
           return;
+        } else if (payload.status === "timeout") {
+          status = "Execution timed out.";
+          return;
+        } else {
+          status = `${payload.status}...`;
         }
-      } catch (e) {
-        console.error("Polling error", e);
       }
+    } catch (e: unknown) {
+      console.error("Polling error", e);
+      status = "Error: " + (e instanceof Error ? e.message : String(e));
     }
-    status = "Execution timed out.";
   }
 
   async function submitCode() {
@@ -37,8 +47,8 @@
       } else {
         status = `Failed to submit: ${error?.value || 'Unknown error'}`;
       }
-    } catch (e: any) {
-      status = "Error: " + e.message;
+    } catch (e: unknown) {
+      status = "Error: " + (e instanceof Error ? e.message : String(e));
     }
   }
 </script>

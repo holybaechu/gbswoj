@@ -1,0 +1,7 @@
+FROM oven/bun:1.3.11-alpine
+
+RUN apk add --no-cache rust cargo watchexec nsjail python3
+
+WORKDIR /app
+
+CMD ["sh", "-c", "bun install && bunx turbo run dev"]
