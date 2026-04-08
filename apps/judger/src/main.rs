@@ -1,6 +1,7 @@
 use fred::prelude::*;
 use std::collections::HashMap;
-use std::io::Write;
+use std::io::{Read, Write};
+use std::os::unix::io::FromRawFd;
 use std::process::{Command, Stdio};
 use tokio::task;
 
@@ -108,6 +109,17 @@ async fn handle_submission(client: Client, id: String, code: String) {
 fn run_in_nsjail(code: String) -> String {
     println!("Running in NSJail...");
 
+    let mut log_fds: [libc::c_int; 2] = [0; 2];
+    unsafe {
+        if libc::pipe(log_fds.as_mut_ptr()) != 0 {
+            return "Internal Error: Failed to create log pipe".to_string();
+        }
+    }
+    
+    let log_read_fd_raw = log_fds[0];
+    let log_write_fd_raw = log_fds[1];
+    let log_write_fd_str = log_write_fd_raw.to_string();
+
     let mut child = Command::new("nsjail")
         .args([
             "-Mo",
@@ -119,11 +131,18 @@ fn run_in_nsjail(code: String) -> String {
             "-R", "/dev/null",
             "-R", "/dev/zero",
             "-T", "/tmp",
-            "--time_limit",
-            EXECUTION_TIMEOUT_SECS,
+            "--user", "65534",
+            "--group", "65534",
+            "--hostname", "gbswoj",
+            "--log_fd", &log_write_fd_str,
+            "--time_limit", EXECUTION_TIMEOUT_SECS,
+            "--rlimit_cpu", EXECUTION_TIMEOUT_SECS,
+            "--rlimit_fsize", "5",
             "--max_cpus", "1",
             "--rlimit_as", "256",
+            "--rlimit_nproc", "64",
             "--disable_proc",
+            "--pass_fd", &log_write_fd_str,
             "--", "/usr/bin/python3", "-u", "-",
         ])
         .stdin(Stdio::piped())
@@ -132,25 +151,53 @@ fn run_in_nsjail(code: String) -> String {
         .spawn()
         .expect("Failed to spawn nsjail process");
 
+    // Close the write end in the parent process
+    unsafe { libc::close(log_write_fd_raw) };
+
     if let Some(mut stdin) = child.stdin.take() {
         std::thread::spawn(move || {
             let _ = stdin.write_all(code.as_bytes());
         });
     }
 
-    let output = child
-        .wait_with_output()
-        .expect("Failed to read nsjail output");
+    let nsjail_log = unsafe { std::fs::File::from_raw_fd(log_read_fd_raw) };
+    let nsjail_log_thread = std::thread::spawn(move || {
+        let mut out = String::new();
+        let log_ref = nsjail_log;
+        let _ = log_ref.take(MAX_OUTPUT_BYTES as u64).read_to_string(&mut out);
+        out
+    });
 
-    let mut result = String::from_utf8_lossy(&output.stdout).to_string();
-    result.push_str(&String::from_utf8_lossy(&output.stderr));
+    let stdout = child.stdout.take().expect("Failed to open stdout");
+    let stderr = child.stderr.take().expect("Failed to open stderr");
+
+    let stdout_thread = std::thread::spawn(move || {
+        let mut out = String::new();
+        let _ = stdout.take(MAX_OUTPUT_BYTES as u64).read_to_string(&mut out);
+        out
+    });
+
+    let mut result_err = String::new();
+    let _ = stderr.take(MAX_OUTPUT_BYTES as u64).read_to_string(&mut result_err);
+
+    let result_out = stdout_thread.join().unwrap_or_default();
+    let nsjail_log_out = nsjail_log_thread.join().unwrap_or_default();
+    
+    let output_status = child.wait().expect("Failed to wait on nsjail");
+
+    if !nsjail_log_out.is_empty() {
+        println!("Nsjail internal log: {}", nsjail_log_out);
+    }
+
+    let mut result = result_out;
+    result.push_str(&result_err);
 
     if result.len() > MAX_OUTPUT_BYTES {
         result.truncate(MAX_OUTPUT_BYTES);
         result.push_str("\n[Output truncated]");
     }
 
-    if result.is_empty() && output.status.code() != Some(0) {
+    if result.is_empty() && output_status.code() != Some(0) {
         return "Runtime Error (No Output)".to_string();
     }
 

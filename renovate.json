@@ -13,6 +13,11 @@
 			"matchCurrentVersion": "!/^0/",
 			"automerge": true,
 			"platformAutomerge": true
+		},
+		{
+			"matchDepNames": ["node", "@types/node"],
+			"matchDepTypes": ["engines", "devDependencies", "uses-with"],
+			"allowedVersions": "<=24"
 		}
 	]
 }

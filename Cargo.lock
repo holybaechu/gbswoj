@@ -357,6 +357,7 @@ name = "judger"
 version = "0.1.0"
 dependencies = [
  "fred",
+ "libc",
  "tokio",
 ]
 

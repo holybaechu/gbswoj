@@ -5,4 +5,5 @@ edition.workspace = true
 
 [dependencies]
 fred = "10.1.0"
+libc = "0.2.184"
 tokio = { version = "1.51.0", features = ["full"] }
