@@ -5,16 +5,24 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - .:/app
+      
       - /app/node_modules
       - /app/apps/frontend/node_modules
       - /app/apps/backend/node_modules
+      - /app/apps/judger/node_modules
+      - pnpm-store:/pnpm/store
+
+      - cargo-registry:/usr/local/cargo/registry
+      - cargo-git:/usr/local/cargo/git
+      - cargo-target:/app/apps/judger/target
     ports:
-      - 3000:3000
-      - 4000:4000
-      - 5173:5173
+      - "3000:3000"
+      - "4000:4000"
+      - "5173:5173"
     environment:
       - REDIS_URL=redis://redis:6379
       - HOST=0.0.0.0
+      - CARGO_HOME=/usr/local/cargo
     cap_add:
       - SYS_ADMIN
     security_opt:
@@ -24,6 +32,12 @@ services:
       - redis
 
   redis:
-    image: redis:8.6.2
+    image: redis:8.6.2-alpine
     ports:
-      - 6379:6379
+      - "6379:6379"
+
+volumes:
+  pnpm-store:
+  cargo-registry:
+  cargo-git:
+  cargo-target:
