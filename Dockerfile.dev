@@ -25,4 +25,4 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/app/apps/judger/target \
     cd apps/judger && cargo build --release
 
-CMD ["sh", "-lc", "if [ ! -x /app/apps/backend/node_modules/.bin/nest ] || [ ! -x /app/apps/frontend/node_modules/.bin/next ]; then pnpm install --no-frozen-lockfile; fi && pnpm exec turbo run dev"]
+CMD ["sh", "-lc", "pnpm install --no-frozen-lockfile && pnpm exec turbo run dev"]

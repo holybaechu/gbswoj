@@ -3,3 +3,5 @@ packages:
   - apps/frontend
   - apps/judger
   - packages/*
+allowBuilds:
+  '@nestjs/core': true
