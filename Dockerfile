@@ -8,7 +8,7 @@ COPY . .
 RUN pnpm install --no-frozen-lockfile
 RUN pnpm exec turbo run build --filter=!@gbswoj/judger
 
-FROM rust:1.94.1-alpine AS rust-builder
+FROM rust:1.95.0-alpine AS rust-builder
 WORKDIR /app
 COPY . .
 RUN apk add --no-cache musl-dev
