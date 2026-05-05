@@ -32,7 +32,7 @@ services:
       - redis
 
   redis:
-    image: redis:8.6.2-alpine
+    image: redis:8.6.3-alpine
     ports:
       - "6379:6379"
 
