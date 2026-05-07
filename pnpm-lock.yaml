@@ -10,7 +10,7 @@ importers:
     devDependencies:
       turbo:
         specifier: ^2.9.3
-        version: 2.9.9
+        version: 2.9.10
 
   apps/backend:
     dependencies:
@@ -1157,33 +1157,33 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
-  '@turbo/darwin-64@2.9.9':
-    resolution: {integrity: sha512-hTEiNu2ABZZOO1qbjnKASI8eF3BdOOzU6iKv5w5uGOK65DDMc10cS40N1kqM99YT0uSAGUwNu6GdFctRPeEeVA==}
+  '@turbo/darwin-64@2.9.10':
+    resolution: {integrity: sha512-5BVJnes8/zMPydF8ktfBBWqCCpUeWVxwZ6avYHRqLzk2PuTAsLz0TlaKdDe1nk1cz3/o0c+7CEf6zqNXdB2N7Q==}
     cpu: [x64]
     os: [darwin]
 
-  '@turbo/darwin-arm64@2.9.9':
-    resolution: {integrity: sha512-MinO40EEcP5mJiTVpfjtEulsEBhVeryfq21QhYtJZ8hQJLHGgy459rcmDVAY8/JERe4dkVU4KW+zoLF22o01EA==}
+  '@turbo/darwin-arm64@2.9.10':
+    resolution: {integrity: sha512-MwaJl+vsxlkkDJYWN87GWKYD64kOvZFFlrDtGmCDeEx/488Kola5TVgS0VQkEUwnbDPjaDIB7kBMIzdzJRElbg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@turbo/linux-64@2.9.9':
-    resolution: {integrity: sha512-7JNLw88Isk+gMlbsC8pulLDkrqe2B827ZsKFEHilb17AC6Xn/62pzH7afjY7fEU6Ayp4XP/vGhlRWOzqBvBvIQ==}
+  '@turbo/linux-64@2.9.10':
+    resolution: {integrity: sha512-HWrCKR+kUicEf4awj1EVRh5LI2hiDncpWZSXqhVj+wQT3SolBSXqXiSPYHgdh6hkmyfvz75Ex/+axXGcgQGdeA==}
     cpu: [x64]
     os: [linux]
 
-  '@turbo/linux-arm64@2.9.9':
-    resolution: {integrity: sha512-0pnXDwPw1rHii98JZPRg7SvsjIzy7jrhkwGU9Jy5fVYoMdYd3P2vbtLfII+OJ0Mm4Ar5yykdHDTz3RWiRI1o9g==}
+  '@turbo/linux-arm64@2.9.10':
+    resolution: {integrity: sha512-edJINoZcDn4g1zkOZHFrGtLX0EWTryoNJSlZK5SEVux4hITT6hTCzugVGtOUmdI+PuJ/xRRL3jKGa+JgjSoq5A==}
     cpu: [arm64]
     os: [linux]
 
-  '@turbo/windows-64@2.9.9':
-    resolution: {integrity: sha512-vjDQycz4gQVvIq4n2rPtiiIESwJlAc406qtkiZlqyL+fHZEd9SxYNlBIFYtc5cuMuwrk+sIKrhN7XvwjmvS9YQ==}
+  '@turbo/windows-64@2.9.10':
+    resolution: {integrity: sha512-rkASn89ATUtSyKvhGaWSyqVHBwtqFEUV1rFNKCtthSoix0T/kUHLJDKpepE/Wh6CtSnhxAfsY8cODtevD/hR7A==}
     cpu: [x64]
     os: [win32]
 
-  '@turbo/windows-arm64@2.9.9':
-    resolution: {integrity: sha512-V6NiH43oCctepbOdQFp7UjqLyK8p6Tt824QA+G4TE+B1BBHu80A0W8OCL+H7uBJ3XZjAj/hvPDw3k3l65DoDGw==}
+  '@turbo/windows-arm64@2.9.10':
+    resolution: {integrity: sha512-cblXqub7uABXKNMzvPB1IyOuSQpeMo7zZHSREB2C0mtIVn4lUSd2CfaGBtOrDqmkC9dsan3itxY4IejChQvfpg==}
     cpu: [arm64]
     os: [win32]
 
@@ -1219,6 +1219,9 @@ packages:
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
+
+  '@types/estree@1.0.9':
+    resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
   '@types/express-serve-static-core@5.1.1':
     resolution: {integrity: sha512-v4zIMr/cX7/d2BpAEX3KNKL/JrT1s43s96lLvvdTmza1oEvDudCqK9aF/djc/SWgy8Yh0h30TZx5VpzqFCxk5A==}
@@ -2061,6 +2064,10 @@ packages:
 
   enhanced-resolve@5.21.0:
     resolution: {integrity: sha512-otxSQPw4lkOZWkHpB3zaEQs6gWYEsmX4xQF68ElXC/TWvGxGMSGOvoNbaLXm6/cS/fSfHtsEdw90y20PCd+sCA==}
+    engines: {node: '>=10.13.0'}
+
+  enhanced-resolve@5.21.1:
+    resolution: {integrity: sha512-8p7DUVq6XJnZEz9W4oSwiwycxBIjHjRzYb3Je3zVN+geKTRQKzAkR/K4PBExlS0090d9nshak6phMUxr3PDjmQ==}
     engines: {node: '>=10.13.0'}
 
   error-ex@1.3.4:
@@ -3848,8 +3855,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  terser@5.46.2:
-    resolution: {integrity: sha512-uxfo9fPcSgLDYob/w1FuL0c99MWiJDnv+5qXSQc5+Ki5NjVNsYi66INnMFBjf6uFz6OnX12piJQPF4IpjJTNTw==}
+  terser@5.47.1:
+    resolution: {integrity: sha512-tPbLXTI6ohPASb/1YViL428oEHu6/qv1OxqYnfaonVCFHqx4+wCd95pHrQWsL5X4pl90CTyW9piSAsS2L0VoMw==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -3944,8 +3951,8 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  turbo@2.9.9:
-    resolution: {integrity: sha512-3xfzXE/yTjhh0S5dIWlE+3E+J9A09REpLI1ZqVh2+HrNZoVzZn0pkvjiRgVK/Ev3PF9XnaTwCntTx+CADWXcyA==}
+  turbo@2.9.10:
+    resolution: {integrity: sha512-YBLeNT0wLoysGgQEkvBWE2GA1liGGZ1j13wa7xHTwELJx4ZhM+c2szeXj6wUOUGO86BmyhY0Q/ELWwU3WDXzZA==}
     hasBin: true
 
   type-check@0.4.0:
@@ -5232,22 +5239,22 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
-  '@turbo/darwin-64@2.9.9':
+  '@turbo/darwin-64@2.9.10':
     optional: true
 
-  '@turbo/darwin-arm64@2.9.9':
+  '@turbo/darwin-arm64@2.9.10':
     optional: true
 
-  '@turbo/linux-64@2.9.9':
+  '@turbo/linux-64@2.9.10':
     optional: true
 
-  '@turbo/linux-arm64@2.9.9':
+  '@turbo/linux-arm64@2.9.10':
     optional: true
 
-  '@turbo/windows-64@2.9.9':
+  '@turbo/windows-64@2.9.10':
     optional: true
 
-  '@turbo/windows-arm64@2.9.9':
+  '@turbo/windows-arm64@2.9.10':
     optional: true
 
   '@tybys/wasm-util@0.10.1':
@@ -5298,6 +5305,8 @@ snapshots:
       '@types/json-schema': 7.0.15
 
   '@types/estree@1.0.8': {}
+
+  '@types/estree@1.0.9': {}
 
   '@types/express-serve-static-core@5.1.1':
     dependencies:
@@ -6161,6 +6170,11 @@ snapshots:
       tapable: 2.3.2
 
   enhanced-resolve@5.21.0:
+    dependencies:
+      graceful-fs: 4.2.11
+      tapable: 2.3.3
+
+  enhanced-resolve@5.21.1:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
@@ -8342,7 +8356,7 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
-      terser: 5.46.2
+      terser: 5.47.1
       webpack: 5.106.0
 
   terser@5.46.1:
@@ -8352,7 +8366,7 @@ snapshots:
       commander: 2.20.3
       source-map-support: 0.5.21
 
-  terser@5.46.2:
+  terser@5.47.1:
     dependencies:
       '@jridgewell/source-map': 0.3.11
       acorn: 8.16.0
@@ -8458,14 +8472,14 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  turbo@2.9.9:
+  turbo@2.9.10:
     optionalDependencies:
-      '@turbo/darwin-64': 2.9.9
-      '@turbo/darwin-arm64': 2.9.9
-      '@turbo/linux-64': 2.9.9
-      '@turbo/linux-arm64': 2.9.9
-      '@turbo/windows-64': 2.9.9
-      '@turbo/windows-arm64': 2.9.9
+      '@turbo/darwin-64': 2.9.10
+      '@turbo/darwin-arm64': 2.9.10
+      '@turbo/linux-64': 2.9.10
+      '@turbo/linux-arm64': 2.9.10
+      '@turbo/windows-64': 2.9.10
+      '@turbo/windows-arm64': 2.9.10
 
   type-check@0.4.0:
     dependencies:
@@ -8660,7 +8674,7 @@ snapshots:
   webpack@5.106.0:
     dependencies:
       '@types/eslint-scope': 3.7.7
-      '@types/estree': 1.0.8
+      '@types/estree': 1.0.9
       '@types/json-schema': 7.0.15
       '@webassemblyjs/ast': 1.14.1
       '@webassemblyjs/wasm-edit': 1.14.1
@@ -8669,7 +8683,7 @@ snapshots:
       acorn-import-phases: 1.0.4(acorn@8.16.0)
       browserslist: 4.28.2
       chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.21.0
+      enhanced-resolve: 5.21.1
       es-module-lexer: 2.1.0
       eslint-scope: 5.1.1
       events: 3.3.0
