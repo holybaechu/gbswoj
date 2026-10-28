@@ -1,4 +1,4 @@
-FROM node:24-alpine
+FROM node:26-alpine
 
 RUN --mount=type=cache,target=/var/cache/apk \
     apk add bash rust cargo watchexec nsjail python3

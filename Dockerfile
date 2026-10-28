@@ -1,4 +1,4 @@
-FROM node:24-alpine AS web-builder
+FROM node:26-alpine AS web-builder
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
 RUN apk add --no-cache bash
@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
     cargo build --release -p judger && \
     cp /app/target/release/judger /app/judger_bin
 
-FROM node:24-alpine
+FROM node:26-alpine
 WORKDIR /app
 
 RUN apk add --no-cache \
